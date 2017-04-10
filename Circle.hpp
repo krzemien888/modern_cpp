@@ -2,19 +2,22 @@
 
 #include "Shape.hpp"
 
-class Circle : public Shape
+class Circle final : public Shape
 {
 public:
     Circle(double r);
-    Circle(const Circle & other);
+    Circle(const Circle & other) = default;
 
-    double getArea() const;
-    double getPerimeter() const;
-    double getRadius() const;
-    void print() const;
+    virtual double getArea() const override;
+    virtual double getPerimeter() const override;
+    virtual double getRadius() const final;
+    virtual void print() const override;
+
+    [[deprecated("Not really true")]]
+    double getPI() const;
 
 private:
-    Circle(); // doesn't allow to call default constructor
+    Circle() = delete; // doesn't allow to call default constructor
 
     double r_;
 };

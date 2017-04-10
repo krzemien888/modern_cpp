@@ -9,18 +9,18 @@
 
 using namespace std;
 
-typedef vector<Shape*> Collection;
+using Collection = vector<Shape*>;
 
-bool sortByArea(Shape* first, Shape* second)
+auto sortByArea(Shape* first, Shape* second)
 {
-    if(first == NULL || second == NULL)
+    if(first == nullptr || second == nullptr)
     {
         return false;
     }
     return (first->getArea() < second->getArea());
 }
 
-bool perimeterBiggerThan20(Shape* s)
+auto perimeterBiggerThan20(Shape* s)
 {
     if(s)
     {
@@ -29,7 +29,7 @@ bool perimeterBiggerThan20(Shape* s)
     return false;
 }
 
-bool areaLessThan10(Shape* s)
+auto areaLessThan10(Shape* s)
 {
     if(s)
     {
@@ -40,22 +40,22 @@ bool areaLessThan10(Shape* s)
 
 void printCollectionElements(const Collection& collection)
 {
-    for(Collection::const_iterator it = collection.begin(); it != collection.end(); ++it)
+    for(const auto& it : collection)
     {
-        if(*it != NULL)
+        if(it != nullptr)
         {
-            (*it)->print();
+            it->print();
         }
     }
 }
 
 void printAreas(const Collection& collection)
 {
-    for(vector<Shape*>::const_iterator it = collection.begin(); it != collection.end(); ++it)
+    for(const auto& it :collection)
     {
-        if(*it != NULL)
+        if(it != nullptr)
         {
-            cout << (*it)->getArea() << std::endl;
+            cout << it->getArea() << std::endl;
         }
     }
 }
@@ -64,8 +64,8 @@ void findFirstShapeMatchingPredicate(const Collection& collection,
                                      bool (*predicate)(Shape* s),
                                      std::string info)
 {
-    Collection::const_iterator iter = std::find_if(collection.begin(), collection.end(), predicate);
-    if(*iter != NULL)
+    auto iter = std::find_if(collection.begin(), collection.end(), predicate);
+    if(*iter != nullptr)
     {
         cout << "First shape matching predicate: " << info << endl;
         (*iter)->print();
@@ -78,14 +78,16 @@ void findFirstShapeMatchingPredicate(const Collection& collection,
 
 int main()
 {
-    Collection shapes;
-    shapes.push_back(new Circle(2.0));
-    shapes.push_back(new Circle(3.0));
-    shapes.push_back(NULL);
-    shapes.push_back(new Circle(4.0));
-    shapes.push_back(new Rectangle(10.0, 5.0));
-    shapes.push_back(new Square(3.0));
-    shapes.push_back(new Circle(4.0));
+    Collection shapes
+    {
+        new Circle(2.0),
+        new Circle(3.0),
+        nullptr,
+        new Circle(4.0),
+        new Rectangle(10.0, 5.0),
+        new Square(3.0),
+        new Circle(4.0)
+    };
 
     printCollectionElements(shapes);
 
@@ -97,12 +99,13 @@ int main()
     cout << "Areas after sort: " << std::endl;
     printAreas(shapes);
 
-    Square* square = new Square(4.0);
+    auto square = new Square(4.0);
     shapes.push_back(square);
 
     findFirstShapeMatchingPredicate(shapes, perimeterBiggerThan20, "perimeter bigger than 20");
     findFirstShapeMatchingPredicate(shapes, areaLessThan10, "area less than 10");
-
+    auto circle = new Circle(2);
+    circle->getPI();
     return 0;
 }
 
